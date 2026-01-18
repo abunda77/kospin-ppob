@@ -16,6 +16,20 @@
                         {{ __('Dashboard') }}
                     </flux:sidebar.item>
                 </flux:sidebar.group>
+
+                @can('users.view')
+                    <flux:sidebar.group :heading="__('Administration')" class="grid">
+                        <flux:sidebar.item icon="users" :href="route('users.index')" :current="request()->routeIs('users.*')">
+                            {{ __('Users') }}
+                        </flux:sidebar.item>
+
+                        @can('roles.view')
+                            <flux:sidebar.item icon="shield-check" :href="route('roles.index')" :current="request()->routeIs('roles.*')">
+                                {{ __('Roles') }}
+                            </flux:sidebar.item>
+                        @endcan
+                    </flux:sidebar.group>
+                @endcan
             </flux:sidebar.nav>
 
             <flux:spacer />
@@ -91,6 +105,7 @@
 
         {{ $slot }}
 
+        @stack('scripts')
         @fluxScripts
     </body>
 </html>
