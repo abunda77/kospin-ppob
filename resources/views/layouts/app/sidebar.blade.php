@@ -1,5 +1,14 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}"
+    x-data="{
+        darkMode: localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches),
+        toggle() {
+            this.darkMode = !this.darkMode;
+            localStorage.setItem('theme', this.darkMode ? 'dark' : 'light');
+        }
+    }"
+    :class="{ 'dark': darkMode }"
+>
     <head>
         @include('partials.head')
     </head>
@@ -41,6 +50,14 @@
 
                 <flux:sidebar.item icon="book-open-text" href="https://laravel.com/docs/starter-kits#livewire" target="_blank">
                     {{ __('Documentation') }}
+                </flux:sidebar.item>
+
+                <flux:sidebar.item as="button" icon="moon" x-on:click="toggle()" x-show="!darkMode" class="cursor-pointer">
+                    {{ __('Dark Mode') }}
+                </flux:sidebar.item>
+
+                <flux:sidebar.item as="button" icon="sun" x-on:click="toggle()" x-show="darkMode" class="cursor-pointer" x-cloak>
+                    {{ __('Light Mode') }}
                 </flux:sidebar.item>
             </flux:sidebar.nav>
 
