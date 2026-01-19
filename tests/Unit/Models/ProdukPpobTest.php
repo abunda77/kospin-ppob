@@ -10,6 +10,7 @@ test('can create produk ppob', function () {
     $subKategori = SubKategori::create([
         'kategori_id' => Kategori::create(['nama' => 'Test', 'kode' => 'TST'])->id,
         'nama' => 'Sub Test',
+        'kode' => 'SUBTST',
     ]);
 
     $produk = ProdukPpob::create([
@@ -28,6 +29,7 @@ test('produk ppob belongs to sub kategori', function () {
     $subKategori = SubKategori::create([
         'kategori_id' => Kategori::create(['nama' => 'Test', 'kode' => 'TST'])->id,
         'nama' => 'Test Sub',
+        'kode' => 'TSTSUB',
     ]);
 
     $produk = ProdukPpob::create([
@@ -44,6 +46,7 @@ test('produk ppob has correct price attributes', function () {
     $produk = ProdukPpob::create([
         'kode' => 'TEST1',
         'nama_produk' => 'Test Product',
+        'sub_kategori_id' => SubKategori::create(['kategori_id' => Kategori::create(['nama' => 'Test', 'kode' => 'TST'])->id, 'nama' => 'Sub', 'kode' => 'SUB'])->id,
         'hpp' => 10000,
         'biaya_admin' => 1000,
         'fee_mitra' => 500,
@@ -80,6 +83,7 @@ test('produk ppob casts decimal attributes correctly', function () {
     $produk = ProdukPpob::create([
         'kode' => 'TEST2',
         'nama_produk' => 'Test',
+        'sub_kategori_id' => SubKategori::create(['kategori_id' => Kategori::create(['nama' => 'Test', 'kode' => 'TST'])->id, 'nama' => 'Sub', 'kode' => 'SUB'])->id,
         'hpp' => '10000.50',
     ]);
 

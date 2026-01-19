@@ -33,16 +33,19 @@ test('kategori can have many sub kategori', function () {
     SubKategori::create([
         'kategori_id' => $kategori->id,
         'nama' => 'Child 1',
+        'kode' => 'CH1',
     ]);
 
     SubKategori::create([
         'kategori_id' => $kategori->id,
         'nama' => 'Child 2',
+        'kode' => 'CH2',
     ]);
 
     SubKategori::create([
         'kategori_id' => $kategori->id,
         'nama' => 'Child 3',
+        'kode' => 'CH3',
     ]);
 
     expect($kategori->subKategori)->toHaveCount(3);

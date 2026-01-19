@@ -1,6 +1,6 @@
 <?php
 
-use App\Livewire\RoleManagement;
+use App\Livewire\RoleCrud;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
@@ -46,7 +46,7 @@ test('non-administrator cannot access role management page', function () {
 
 test('administrator can view roles list', function () {
     Livewire::actingAs($this->admin)
-        ->test(RoleManagement::class)
+        ->test(RoleCrud::class)
         ->assertSee('Administrator')
         ->assertSee('Operator')
         ->assertSee('Guest');
@@ -54,7 +54,7 @@ test('administrator can view roles list', function () {
 
 test('administrator can create new role', function () {
     Livewire::actingAs($this->admin)
-        ->test(RoleManagement::class)
+        ->test(RoleCrud::class)
         ->set('name', 'Manager')
         ->set('selectedPermissions', ['users.view', 'users.edit'])
         ->call('save')
@@ -72,8 +72,8 @@ test('administrator can update existing role', function () {
     $role->givePermissionTo('users.view');
 
     Livewire::actingAs($this->admin)
-        ->test(RoleManagement::class)
-        ->call('openEditModal', $role->id)
+        ->test(RoleCrud::class)
+        ->call('edit', $role->id)
         ->set('name', 'Updated Moderator')
         ->set('selectedPermissions', ['users.view', 'users.create'])
         ->call('save')
@@ -88,7 +88,7 @@ test('administrator can delete custom role', function () {
     $role = Role::create(['name' => 'Custom Role']);
 
     Livewire::actingAs($this->admin)
-        ->test(RoleManagement::class)
+        ->test(RoleCrud::class)
         ->call('confirmDelete', $role->id)
         ->call('delete')
         ->assertHasNoErrors();
@@ -100,7 +100,7 @@ test('administrator cannot delete protected system roles', function () {
     $adminRole = Role::where('name', 'Administrator')->first();
 
     Livewire::actingAs($this->admin)
-        ->test(RoleManagement::class)
+        ->test(RoleCrud::class)
         ->call('confirmDelete', $adminRole->id)
         ->call('delete');
 
@@ -109,7 +109,7 @@ test('administrator cannot delete protected system roles', function () {
 
 test('role creation validates required name', function () {
     Livewire::actingAs($this->admin)
-        ->test(RoleManagement::class)
+        ->test(RoleCrud::class)
         ->set('name', '')
         ->call('save')
         ->assertHasErrors(['name']);
@@ -117,7 +117,7 @@ test('role creation validates required name', function () {
 
 test('role creation validates unique name', function () {
     Livewire::actingAs($this->admin)
-        ->test(RoleManagement::class)
+        ->test(RoleCrud::class)
         ->set('name', 'Administrator')
         ->call('save')
         ->assertHasErrors(['name']);
@@ -128,7 +128,7 @@ test('search filters roles correctly', function () {
     Role::create(['name' => 'Supervisor']);
 
     Livewire::actingAs($this->admin)
-        ->test(RoleManagement::class)
+        ->test(RoleCrud::class)
         ->set('search', 'Manager')
         ->assertSee('Manager')
         ->assertDontSee('Supervisor');
@@ -139,6 +139,6 @@ test('role displays correct permission count', function () {
     $role->givePermissionTo(['users.view', 'users.create', 'users.edit']);
 
     Livewire::actingAs($this->admin)
-        ->test(RoleManagement::class)
+        ->test(RoleCrud::class)
         ->assertSee('3 permissions');
 });

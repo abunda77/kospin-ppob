@@ -12,6 +12,7 @@ test('can create sub kategori', function () {
     $subKategori = SubKategori::create([
         'kategori_id' => $kategori->id,
         'nama' => 'Test Sub Kategori',
+        'kode' => 'TESTSUB',
     ]);
 
     expect($subKategori->nama)->toBe('Test Sub Kategori')
@@ -21,7 +22,7 @@ test('can create sub kategori', function () {
 
 test('sub kategori belongs to kategori', function () {
     $kategori = Kategori::create(['nama' => 'Parent Kategori',  'kode' => 'PAR']);
-    $subKategori = SubKategori::create(['kategori_id' => $kategori->id, 'nama' => 'Child']);
+    $subKategori = SubKategori::create(['kategori_id' => $kategori->id, 'nama' => 'Child', 'kode' => 'CHD']);
 
     expect($subKategori->kategori)->toBeInstanceOf(Kategori::class)
         ->and($subKategori->kategori->nama)->toBe('Parent Kategori');
@@ -31,6 +32,7 @@ test('sub kategori can have many produk ppob', function () {
     $subKategori = SubKategori::create([
         'kategori_id' => Kategori::create(['nama' => 'Test', 'kode' => 'TST'])->id,
         'nama' => 'Sub Test',
+        'kode' => 'SUBTST',
     ]);
 
     ProdukPpob::create([

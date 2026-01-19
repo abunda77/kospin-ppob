@@ -38,6 +38,20 @@
                             </flux:sidebar.item>
                         @endcan
                     </flux:sidebar.group>
+
+                    <flux:sidebar.group :heading="__('Master Data')" class="grid">
+                        <flux:sidebar.item icon="rectangle-stack" :href="route('kategori.index')" :current="request()->routeIs('kategori.*')">
+                            {{ __('Kategori') }}
+                        </flux:sidebar.item>
+
+                        <flux:sidebar.item icon="squares-2x2" :href="route('sub-kategori.index')" :current="request()->routeIs('sub-kategori.*')">
+                            {{ __('Sub Kategori') }}
+                        </flux:sidebar.item>
+
+                        <flux:sidebar.item icon="cube" :href="route('produk-ppob.index')" :current="request()->routeIs('produk-ppob.*')">
+                            {{ __('Produk PPOB') }}
+                        </flux:sidebar.item>
+                    </flux:sidebar.group>
                 @endcan
             </flux:sidebar.nav>
 

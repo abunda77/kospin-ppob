@@ -1,6 +1,6 @@
 <?php
 
-use App\Livewire\UserManagement;
+use App\Livewire\UserCrud;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
@@ -38,13 +38,13 @@ test('administrator can view users list', function () {
     $user = User::factory()->create(['name' => 'Test User']);
 
     Livewire::actingAs($this->admin)
-        ->test(UserManagement::class)
+        ->test(UserCrud::class)
         ->assertSee('Test User');
 });
 
 test('administrator can create new user', function () {
     Livewire::actingAs($this->admin)
-        ->test(UserManagement::class)
+        ->test(UserCrud::class)
         ->set('name', 'New User')
         ->set('email', 'newuser@example.com')
         ->set('password', 'password123')
@@ -67,7 +67,7 @@ test('administrator can update existing user', function () {
     $user->assignRole('Guest');
 
     Livewire::actingAs($this->admin)
-        ->test(UserManagement::class)
+        ->test(UserCrud::class)
         ->call('openEditModal', $user->id)
         ->set('name', 'Updated Name')
         ->set('selectedRole', 'Operator')
@@ -83,7 +83,7 @@ test('administrator can delete user', function () {
     $user = User::factory()->create();
 
     Livewire::actingAs($this->admin)
-        ->test(UserManagement::class)
+        ->test(UserCrud::class)
         ->call('confirmDelete', $user->id)
         ->call('delete')
         ->assertHasNoErrors();
@@ -93,7 +93,7 @@ test('administrator can delete user', function () {
 
 test('administrator cannot delete their own account', function () {
     Livewire::actingAs($this->admin)
-        ->test(UserManagement::class)
+        ->test(UserCrud::class)
         ->call('confirmDelete', $this->admin->id)
         ->call('delete');
 
@@ -105,7 +105,7 @@ test('administrator cannot delete their own account', function () {
 
 test('user creation validates required fields', function () {
     Livewire::actingAs($this->admin)
-        ->test(UserManagement::class)
+        ->test(UserCrud::class)
         ->set('name', '')
         ->set('email', '')
         ->set('password', '')
@@ -116,7 +116,7 @@ test('user creation validates required fields', function () {
 
 test('user creation validates email format', function () {
     Livewire::actingAs($this->admin)
-        ->test(UserManagement::class)
+        ->test(UserCrud::class)
         ->set('email', 'invalid-email')
         ->call('save')
         ->assertHasErrors(['email']);
@@ -126,7 +126,7 @@ test('user creation validates unique email', function () {
     $existingUser = User::factory()->create(['email' => 'existing@example.com']);
 
     Livewire::actingAs($this->admin)
-        ->test(UserManagement::class)
+        ->test(UserCrud::class)
         ->set('name', 'Test User')
         ->set('email', 'existing@example.com')
         ->set('password', 'password123')
@@ -138,7 +138,7 @@ test('user creation validates unique email', function () {
 
 test('user creation validates password confirmation', function () {
     Livewire::actingAs($this->admin)
-        ->test(UserManagement::class)
+        ->test(UserCrud::class)
         ->set('name', 'Test User')
         ->set('email', 'test@example.com')
         ->set('password', 'password123')
@@ -153,7 +153,7 @@ test('search filters users correctly', function () {
     User::factory()->create(['name' => 'Jane Smith', 'email' => 'jane@example.com']);
 
     Livewire::actingAs($this->admin)
-        ->test(UserManagement::class)
+        ->test(UserCrud::class)
         ->set('search', 'John')
         ->assertSee('John Doe')
         ->assertDontSee('Jane Smith');
