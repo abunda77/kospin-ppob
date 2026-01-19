@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\ProdukPpobController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\SubKategoriController;
@@ -28,6 +29,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/kategori', [KategoriController::class, 'index'])->name('kategori.index');
     Route::get('/sub-kategori', [SubKategoriController::class, 'index'])->name('sub-kategori.index');
     Route::get('/produk-ppob', [ProdukPpobController::class, 'index'])->name('produk-ppob.index');
+    Route::get('/pelanggan', [PelangganController::class, 'index'])->name('pelanggan.index');
 });
 
 require __DIR__.'/settings.php';

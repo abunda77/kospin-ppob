@@ -56,6 +56,12 @@ class RolePermissionSeeder extends Seeder
             'produk_ppob.create',
             'produk_ppob.edit',
             'produk_ppob.delete',
+
+            // Pelanggan Management
+            'pelanggan.view',
+            'pelanggan.create',
+            'pelanggan.edit',
+            'pelanggan.delete',
         ];
 
         foreach ($permissions as $permission) {

@@ -51,6 +51,12 @@
                         <flux:sidebar.item icon="cube" :href="route('produk-ppob.index')" :current="request()->routeIs('produk-ppob.*')">
                             {{ __('Produk PPOB') }}
                         </flux:sidebar.item>
+
+                        @can('pelanggan.view')
+                            <flux:sidebar.item icon="users" :href="route('pelanggan.index')" :current="request()->routeIs('pelanggan.*')">
+                                {{ __('Pelanggan') }}
+                            </flux:sidebar.item>
+                        @endcan
                     </flux:sidebar.group>
                 @endcan
             </flux:sidebar.nav>

@@ -15,16 +15,17 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        // User::factory()->create([
+        //     'name' => 'Test User',
+        //     'email' => 'test@example.com',
+        // ]);
 
         // Seed kategori and sub kategori
         $this->call([
-            KategoriSeeder::class,
-            SubKategoriSeeder::class,
+            // KategoriSeeder::class,
+            // SubKategoriSeeder::class,
             RolePermissionSeeder::class,
+            PelangganSeeder::class,
         ]);
     }
 }
