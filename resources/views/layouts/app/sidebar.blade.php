@@ -58,6 +58,35 @@
                             </flux:sidebar.item>
                         @endcan
                     </flux:sidebar.group>
+
+                @endcan
+
+                @can('network.view')
+                    <flux:sidebar.group :heading="__('Network Connection')" class="grid">
+                        <flux:sidebar.item icon="server" :href="route('network.sign-on-vps')" :current="request()->routeIs('network.sign-on-vps')">
+                            {{ __('Sign-On VPS') }}
+                        </flux:sidebar.item>
+
+                        <flux:sidebar.item icon="play-circle" :href="route('network.start-tunnel')" :current="request()->routeIs('network.start-tunnel')">
+                            {{ __('Start Tunnel') }}
+                        </flux:sidebar.item>
+
+                        <flux:sidebar.item icon="stop-circle" :href="route('network.stop-tunnel')" :current="request()->routeIs('network.stop-tunnel')">
+                            {{ __('Stop Tunnel') }}
+                        </flux:sidebar.item>
+
+                        <flux:sidebar.item icon="globe-alt" :href="route('network.check-ip')" :current="request()->routeIs('network.check-ip')">
+                            {{ __('Check IP Address') }}
+                        </flux:sidebar.item>
+
+                        <flux:sidebar.item icon="signal" :href="route('network.check-port')" :current="request()->routeIs('network.check-port')">
+                            {{ __('Check Port Status') }}
+                        </flux:sidebar.item>
+
+                        <flux:sidebar.item icon="check-circle" :href="route('network.verify-environment')" :current="request()->routeIs('network.verify-environment')">
+                            {{ __('Verify Environment') }}
+                        </flux:sidebar.item>
+                    </flux:sidebar.group>
                 @endcan
             </flux:sidebar.nav>
 

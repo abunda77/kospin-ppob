@@ -62,6 +62,9 @@ class RolePermissionSeeder extends Seeder
             'pelanggan.create',
             'pelanggan.edit',
             'pelanggan.delete',
+            
+            // Network Management
+            'network.view',
         ];
 
         foreach ($permissions as $permission) {
