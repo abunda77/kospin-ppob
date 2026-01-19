@@ -181,6 +181,26 @@ class UserCrud extends Component
         $this->resetValidation();
     }
 
+    /**
+     * Get available roles based on current user's role.
+     * Administrators can see all roles.
+     * Other roles (like Operator) can only see Operator and Guest.
+     */
+    protected function getAvailableRoles()
+    {
+        $allRoles = Role::all();
+
+        // If current user is Administrator, show all roles
+        if (auth()->user()->hasRole('Administrator')) {
+            return $allRoles;
+        }
+
+        // For non-Administrator users, filter out Administrator role
+        return $allRoles->reject(function ($role) {
+            return $role->name === 'Administrator';
+        });
+    }
+
     public function render()
     {
         $users = User::with('roles')
@@ -195,7 +215,7 @@ class UserCrud extends Component
             ->latest()
             ->paginate($this->perPage);
 
-        $roles = Role::all();
+        $roles = $this->getAvailableRoles();
 
         return view('livewire.user-crud', [
             'users' => $users,
