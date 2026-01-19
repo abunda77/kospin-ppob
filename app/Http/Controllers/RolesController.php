@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\DataTables\RolesDataTable;
-
 class RolesController extends Controller
 {
     public function index()

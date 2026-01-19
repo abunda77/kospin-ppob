@@ -19,5 +19,12 @@ class DatabaseSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+
+        // Seed kategori and sub kategori
+        $this->call([
+            KategoriSeeder::class,
+            SubKategoriSeeder::class,
+            RolePermissionSeeder::class,
+        ]);
     }
 }

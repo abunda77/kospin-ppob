@@ -14,18 +14,25 @@ class UserCrud extends Component
 
     // Filters
     public $search = '';
+
     public $perPage = 10;
 
     // Form Data
     public $name;
+
     public $email;
+
     public $password;
+
     public $selectedRoles = [];
+
     public $userId;
 
     // Modal States
     public $isEditing = false;
+
     public $showModal = false;
+
     public $showDeleteModal = false;
 
     // Listeners are implicit in Livewire 3/4 usually, or wire:click is used directly.
@@ -74,7 +81,7 @@ class UserCrud extends Component
         $this->email = $user->email;
         // Password not filled for security
         $this->selectedRoles = $user->roles->pluck('name')->toArray();
-        
+
         $this->isEditing = true;
         $this->showModal = true;
     }
@@ -111,7 +118,7 @@ class UserCrud extends Component
     protected function updateUser(): void
     {
         $user = User::findOrFail($this->userId);
-        
+
         $data = [
             'name' => $this->name,
             'email' => $this->email,
@@ -139,9 +146,10 @@ class UserCrud extends Component
 
         // Prevent deleting self
         if ($user->id === auth()->id()) {
-             session()->flash('error', 'You cannot delete your own account.');
-             $this->showDeleteModal = false;
-             return;
+            session()->flash('error', 'You cannot delete your own account.');
+            $this->showDeleteModal = false;
+
+            return;
         }
 
         $user->delete();
@@ -161,8 +169,8 @@ class UserCrud extends Component
     {
         $users = User::with('roles')
             ->when($this->search, function ($query) {
-                $query->where('name', 'like', '%' . $this->search . '%')
-                      ->orWhere('email', 'like', '%' . $this->search . '%');
+                $query->where('name', 'like', '%'.$this->search.'%')
+                    ->orWhere('email', 'like', '%'.$this->search.'%');
             })
             ->latest()
             ->paginate($this->perPage);
