@@ -76,6 +76,13 @@ class UserCrud extends Component
     {
         $user = User::with('roles')->findOrFail($userId);
 
+        // Prevent non-Administrator from editing super admin
+        if ($user->email === 'admin@kospin-ppob.com' && ! auth()->user()->hasRole('Administrator')) {
+            session()->flash('error', 'You do not have permission to edit this user.');
+
+            return;
+        }
+
         $this->userId = $user->id;
         $this->name = $user->name;
         $this->email = $user->email;
@@ -136,6 +143,15 @@ class UserCrud extends Component
 
     public function confirmDelete($userId): void
     {
+        $user = User::findOrFail($userId);
+
+        // Prevent non-Administrator from deleting super admin
+        if ($user->email === 'admin@kospin-ppob.com' && ! auth()->user()->hasRole('Administrator')) {
+            session()->flash('error', 'You do not have permission to delete this user.');
+
+            return;
+        }
+
         $this->userId = $userId;
         $this->showDeleteModal = true;
     }
@@ -171,6 +187,10 @@ class UserCrud extends Component
             ->when($this->search, function ($query) {
                 $query->where('name', 'like', '%'.$this->search.'%')
                     ->orWhere('email', 'like', '%'.$this->search.'%');
+            })
+            // Hide super admin from non-Administrator users
+            ->when(! auth()->user()->hasRole('Administrator'), function ($query) {
+                $query->where('email', '!=', 'admin@kospin-ppob.com');
             })
             ->latest()
             ->paginate($this->perPage);

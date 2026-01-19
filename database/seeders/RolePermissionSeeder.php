@@ -38,38 +38,58 @@ class RolePermissionSeeder extends Seeder
 
             // Dashboard
             'dashboard.view',
+
+            // Kategori Management
+            'kategori.view',
+            'kategori.create',
+            'kategori.edit',
+            'kategori.delete',
+
+            // Sub Kategori Management
+            'sub_kategori.view',
+            'sub_kategori.create',
+            'sub_kategori.edit',
+            'sub_kategori.delete',
+
+            // Produk PPOB Management
+            'produk_ppob.view',
+            'produk_ppob.create',
+            'produk_ppob.edit',
+            'produk_ppob.delete',
         ];
 
         foreach ($permissions as $permission) {
-            \Spatie\Permission\Models\Permission::create(['name' => $permission]);
+            \Spatie\Permission\Models\Permission::firstOrCreate(['name' => $permission]);
         }
 
         // Create roles and assign permissions
 
         // Administrator (Super Admin) - has all permissions
-        $adminRole = \Spatie\Permission\Models\Role::create(['name' => 'Administrator']);
+        $adminRole = \Spatie\Permission\Models\Role::firstOrCreate(['name' => 'Administrator']);
         $adminRole->givePermissionTo(\Spatie\Permission\Models\Permission::all());
 
         // Operator - limited permissions
-        $operatorRole = \Spatie\Permission\Models\Role::create(['name' => 'Operator']);
+        $operatorRole = \Spatie\Permission\Models\Role::firstOrCreate(['name' => 'Operator']);
         $operatorRole->givePermissionTo([
             'dashboard.view',
-            'users.view',
+            // 'users.view',
         ]);
 
         // Guest - minimal permissions
-        $guestRole = \Spatie\Permission\Models\Role::create(['name' => 'Guest']);
+        $guestRole = \Spatie\Permission\Models\Role::firstOrCreate(['name' => 'Guest']);
         $guestRole->givePermissionTo([
             'dashboard.view',
         ]);
 
         // Create default admin user
-        $admin = \App\Models\User::create([
-            'name' => 'Administrator',
-            'email' => 'admin@kospin-ppob.com',
-            'password' => bcrypt('password'),
-            'email_verified_at' => now(),
-        ]);
+        $admin = \App\Models\User::firstOrCreate(
+            ['email' => 'admin@kospin-ppob.com'],
+            [
+                'name' => 'Administrator',
+                'password' => bcrypt('password'),
+                'email_verified_at' => now(),
+            ]
+        );
         $admin->assignRole('Administrator');
 
         $this->command->info('Roles and permissions seeded successfully!');

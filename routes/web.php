@@ -17,10 +17,14 @@ Route::view('dashboard', 'dashboard')
 
 // Administrator-only routes
 Route::middleware(['auth', 'verified', 'administrator'])->group(function () {
-    Route::get('/users', [UsersController::class, 'index'])->name('users.index');
+
     Route::get('/roles', [RolesController::class, 'index'])->name('roles.index');
 
-    // Master Data routes
+});
+
+// Master Data routes
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/users', [UsersController::class, 'index'])->name('users.index');
     Route::get('/kategori', [KategoriController::class, 'index'])->name('kategori.index');
     Route::get('/sub-kategori', [SubKategoriController::class, 'index'])->name('sub-kategori.index');
     Route::get('/produk-ppob', [ProdukPpobController::class, 'index'])->name('produk-ppob.index');
