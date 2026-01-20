@@ -3,7 +3,7 @@
         <div class="max-w-7xl mx-auto">
             <flux:heading size="xl" class="mb-6">Verify Environment</flux:heading>
 
-            <livewire:verify-environment />
+            <livewire:network.verify-environment />
         </div>
     </div>
 </x-layouts::app>

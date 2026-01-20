@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Network;
 
 use Livewire\Component;
 
@@ -52,9 +52,24 @@ class VerifyEnvironment extends Component
 
     public array $gitignoreEntries = ['.env', 'session_id.txt', 'session_history.txt'];
 
+    public $hasRun = false;
+    public $isRunning = false;
+
     public function mount(): void
     {
+        // Don't run on mount
+    }
+
+    public function runCheck(): void
+    {
+        $this->isRunning = true;
+        
+        // Simulate a small delay for better UX
+        sleep(1);
+        
         $this->verifyEnvironment();
+        $this->hasRun = true;
+        $this->isRunning = false;
     }
 
     public function verifyEnvironment(): void
@@ -67,6 +82,18 @@ class VerifyEnvironment extends Component
         $this->verifyGitignore();
 
         $this->determineOverallStatus();
+    }
+
+    // ... kept other methods as they are ...
+
+    public function refreshVerification(): void
+    {
+        $this->runCheck();
+    }
+
+    public function render()
+    {
+        return view('livewire.network.verify-environment');
     }
 
     private function verifyRequiredVars(): void
@@ -184,13 +211,5 @@ class VerifyEnvironment extends Component
         $this->allChecksPassed = $this->envFileExists && $requiredOk && $noPlaceholders && $gitignoreOk;
     }
 
-    public function refreshVerification(): void
-    {
-        $this->verifyEnvironment();
-    }
 
-    public function render()
-    {
-        return view('livewire.verify-environment');
-    }
 }
