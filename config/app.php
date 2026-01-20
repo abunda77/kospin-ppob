@@ -136,4 +136,17 @@ return [
 
     'registered_ip' => env('REGISTERED_IP'),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Proxy Port
+    |--------------------------------------------------------------------------
+    |
+    | This value is the port number used for the SSH tunnel/proxy connection.
+    | This is typically set to 1080 for SOCKS proxy. The port checker will
+    | verify if this port is open to ensure the SSH tunnel is running.
+    |
+    */
+
+    'proxy_port' => (int) env('PROXY_PORT', 1080),
+
 ];
