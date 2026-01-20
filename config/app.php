@@ -149,4 +149,18 @@ return [
 
     'proxy_port' => (int) env('PROXY_PORT', 1080),
 
+    /*
+    |--------------------------------------------------------------------------
+    | VPS Configuration for SSH Tunnel
+    |--------------------------------------------------------------------------
+    |
+    | These values are used for SSH tunnel connection to VPS.
+    | VPS IP: The IP address of your Virtual Private Server
+    | VPS User: The username for SSH connection to VPS
+    |
+    */
+
+    'vps_ip' => env('VPS_IP'),
+    'vps_user' => env('VPS_USER'),
+
 ];
