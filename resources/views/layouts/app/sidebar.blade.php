@@ -62,31 +62,62 @@
                 @endcan
 
                 @can('network.view')
-                    <flux:sidebar.group :heading="__('Network Connection')" class="grid">
-                        <flux:sidebar.item icon="server" :href="route('network.sign-on-vps')" :current="request()->routeIs('network.sign-on-vps')">
-                            {{ __('Sign-On VPS') }}
-                        </flux:sidebar.item>
+                    <div 
+                        x-data="{ 
+                            expanded: localStorage.getItem('network_menu_expanded') === 'true' || {{ request()->routeIs('network.*') ? 'true' : 'false' }},
+                            toggle() {
+                                this.expanded = !this.expanded;
+                                localStorage.setItem('network_menu_expanded', this.expanded);
+                            }
+                        }" 
+                        class="px-4 py-2"
+                    >
+                        <!-- Dropdown Header -->
+                        <button 
+                            @click="toggle()"
+                            class="flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-800 {{ request()->routeIs('network.*') ? 'bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-white' : 'text-zinc-600 dark:text-zinc-400' }}"
+                        >
+                            <div class="flex items-center gap-3">
+                                <flux:icon.signal class="size-5" />
+                                <span>{{ __('Network Connection') }}</span>
+                            </div>
+                            <flux:icon.chevron-down 
+                                class="size-4 transition-transform duration-200" 
+                                ::class="{ 'rotate-180': expanded }"
+                            />
+                        </button>
 
-                        <flux:sidebar.item icon="play-circle" :href="route('network.start-tunnel')" :current="request()->routeIs('network.start-tunnel')">
-                            {{ __('Start Tunnel') }}
-                        </flux:sidebar.item>
+                        <!-- Dropdown Items -->
+                        <div 
+                            x-show="expanded" 
+                            x-collapse
+                            class="mt-1 space-y-1 pl-4"
+                        >
+                            <flux:sidebar.item icon="server" :href="route('network.sign-on-vps')" :current="request()->routeIs('network.sign-on-vps')" class="text-sm">
+                                {{ __('Sign-On VPS') }}
+                            </flux:sidebar.item>
 
-                        <flux:sidebar.item icon="stop-circle" :href="route('network.stop-tunnel')" :current="request()->routeIs('network.stop-tunnel')">
-                            {{ __('Stop Tunnel') }}
-                        </flux:sidebar.item>
+                            <flux:sidebar.item icon="play-circle" :href="route('network.start-tunnel')" :current="request()->routeIs('network.start-tunnel')" class="text-sm">
+                                {{ __('Start Tunnel') }}
+                            </flux:sidebar.item>
 
-                        <flux:sidebar.item icon="globe-alt" :href="route('network.check-ip')" :current="request()->routeIs('network.check-ip')">
-                            {{ __('Check IP Address') }}
-                        </flux:sidebar.item>
+                            <flux:sidebar.item icon="stop-circle" :href="route('network.stop-tunnel')" :current="request()->routeIs('network.stop-tunnel')" class="text-sm">
+                                {{ __('Stop Tunnel') }}
+                            </flux:sidebar.item>
 
-                        <flux:sidebar.item icon="signal" :href="route('network.check-port')" :current="request()->routeIs('network.check-port')">
-                            {{ __('Check Port Status') }}
-                        </flux:sidebar.item>
+                            <flux:sidebar.item icon="globe-alt" :href="route('network.check-ip')" :current="request()->routeIs('network.check-ip')" class="text-sm">
+                                {{ __('Check IP Address') }}
+                            </flux:sidebar.item>
 
-                        <flux:sidebar.item icon="check-circle" :href="route('network.verify-environment')" :current="request()->routeIs('network.verify-environment')">
-                            {{ __('Verify Environment') }}
-                        </flux:sidebar.item>
-                    </flux:sidebar.group>
+                            <flux:sidebar.item icon="signal" :href="route('network.check-port')" :current="request()->routeIs('network.check-port')" class="text-sm">
+                                {{ __('Check Port Status') }}
+                            </flux:sidebar.item>
+
+                            <flux:sidebar.item icon="check-circle" :href="route('network.verify-environment')" :current="request()->routeIs('network.verify-environment')" class="text-sm">
+                                {{ __('Verify Environment') }}
+                            </flux:sidebar.item>
+                        </div>
+                    </div>
                 @endcan
             </flux:sidebar.nav>
 

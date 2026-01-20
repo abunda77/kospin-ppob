@@ -38,9 +38,9 @@
                             </a>
 
                             @if (Route::has('register'))
-                                <a href="{{ route('register') }}" class="px-5 py-2.5 text-sm font-medium bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded-full hover:bg-zinc-800 dark:hover:bg-zinc-100 transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5">
+                                <x-button variant="floating" size="sm" href="{{ route('register') }}">
                                     Daftar Sekarang
-                                </a>
+                                </x-button>
                             @endif
                         @endauth
                     </div>
@@ -75,13 +75,13 @@
                 </p>
                 
                 <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
-                    <a href="{{ route('register') }}" class="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-lime-500 to-emerald-600 text-white font-semibold rounded-2xl hover:brightness-110 transition-all shadow-lg shadow-lime-500/25 flex items-center justify-center gap-2 group">
+                    <x-button variant="floating" size="lg" href="{{ route('register') }}" class="w-full sm:w-auto group">
                         Mulai Gratis
                         <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
-                    </a>
-                    <a href="#features" class="w-full sm:w-auto px-8 py-4 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white font-semibold rounded-2xl border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-all flex items-center justify-center gap-2">
+                    </x-button>
+                    <x-button variant="secondary" size="lg" href="#features" class="w-full sm:w-auto">
                         Pelajari Lebih Lanjut
-                    </a>
+                    </x-button>
                 </div>
                 
                 <div class="mt-10 flex items-center justify-center lg:justify-start gap-6 text-zinc-500 dark:text-zinc-500 text-sm font-medium">

@@ -123,4 +123,17 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Registered IP Address
+    |--------------------------------------------------------------------------
+    |
+    | This value is the registered/whitelisted IP address that is allowed
+    | to access the application. This is used for network connection
+    | verification and security purposes.
+    |
+    */
+
+    'registered_ip' => env('REGISTERED_IP'),
+
 ];
