@@ -13,47 +13,47 @@
         @include('partials.head')
     </head>
     <body class="min-h-screen bg-white dark:bg-zinc-950">
-        <flux:sidebar sticky collapsible="mobile" class="border-e border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900">
+        <flux:sidebar sticky collapsible="mobile" class="border-r border-zinc-200 bg-zinc-50/50 dark:border-zinc-800 dark:bg-zinc-900">
             <flux:sidebar.header>
                 <x-app-logo :sidebar="true" href="{{ route('dashboard') }}" wire:navigate />
                 <flux:sidebar.collapse class="lg:hidden" />
             </flux:sidebar.header>
 
             <flux:sidebar.nav>
-                <flux:sidebar.group :heading="__('Platform')" class="grid">
-                    <flux:sidebar.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
+                <flux:sidebar.group :heading="__('Platform')" class="grid gap-2">
+                    <flux:sidebar.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate class="[&_svg]:text-blue-600 dark:[&_svg]:text-blue-400 hover:bg-white dark:hover:bg-white/10 hover:shadow-sm transition-all duration-200">
                         {{ __('Dashboard') }}
                     </flux:sidebar.item>
                 </flux:sidebar.group>
 
                 @can('users.view')
-                    <flux:sidebar.group :heading="__('Administration')" class="grid">
-                        <flux:sidebar.item icon="users" :href="route('users.index')" :current="request()->routeIs('users.*')">
+                    <flux:sidebar.group :heading="__('Administration')" class="grid gap-2">
+                        <flux:sidebar.item icon="users" :href="route('users.index')" :current="request()->routeIs('users.*')" class="[&_svg]:text-indigo-600 dark:[&_svg]:text-indigo-400 hover:bg-white dark:hover:bg-white/10 hover:shadow-sm transition-all duration-200">
                             {{ __('Users') }}
                         </flux:sidebar.item>
 
                         @can('roles.view')
-                            <flux:sidebar.item icon="shield-check" :href="route('roles.index')" :current="request()->routeIs('roles.*')">
+                            <flux:sidebar.item icon="shield-check" :href="route('roles.index')" :current="request()->routeIs('roles.*')" class="[&_svg]:text-purple-600 dark:[&_svg]:text-purple-400 hover:bg-white dark:hover:bg-white/10 hover:shadow-sm transition-all duration-200">
                                 {{ __('Roles') }}
                             </flux:sidebar.item>
                         @endcan
                     </flux:sidebar.group>
 
-                    <flux:sidebar.group :heading="__('Master Data')" class="grid">
-                        <flux:sidebar.item icon="rectangle-stack" :href="route('kategori.index')" :current="request()->routeIs('kategori.*')">
+                    <flux:sidebar.group :heading="__('Master Data')" class="grid gap-2">
+                        <flux:sidebar.item icon="rectangle-stack" :href="route('kategori.index')" :current="request()->routeIs('kategori.*')" class="[&_svg]:text-orange-600 dark:[&_svg]:text-orange-400 hover:bg-white dark:hover:bg-white/10 hover:shadow-sm transition-all duration-200">
                             {{ __('Kategori') }}
                         </flux:sidebar.item>
 
-                        <flux:sidebar.item icon="squares-2x2" :href="route('sub-kategori.index')" :current="request()->routeIs('sub-kategori.*')">
+                        <flux:sidebar.item icon="squares-2x2" :href="route('sub-kategori.index')" :current="request()->routeIs('sub-kategori.*')" class="[&_svg]:text-amber-600 dark:[&_svg]:text-amber-400 hover:bg-white dark:hover:bg-white/10 hover:shadow-sm transition-all duration-200">
                             {{ __('Sub Kategori') }}
                         </flux:sidebar.item>
 
-                        <flux:sidebar.item icon="cube" :href="route('produk-ppob.index')" :current="request()->routeIs('produk-ppob.*')">
+                        <flux:sidebar.item icon="cube" :href="route('produk-ppob.index')" :current="request()->routeIs('produk-ppob.*')" class="[&_svg]:text-emerald-600 dark:[&_svg]:text-emerald-400 hover:bg-white dark:hover:bg-white/10 hover:shadow-sm transition-all duration-200">
                             {{ __('Produk PPOB') }}
                         </flux:sidebar.item>
 
                         @can('pelanggan.view')
-                            <flux:sidebar.item icon="users" :href="route('pelanggan.index')" :current="request()->routeIs('pelanggan.*')">
+                            <flux:sidebar.item icon="users" :href="route('pelanggan.index')" :current="request()->routeIs('pelanggan.*')" class="[&_svg]:text-cyan-600 dark:[&_svg]:text-cyan-400 hover:bg-white dark:hover:bg-white/10 hover:shadow-sm transition-all duration-200">
                                 {{ __('Pelanggan') }}
                             </flux:sidebar.item>
                         @endcan
@@ -75,10 +75,10 @@
                         <!-- Dropdown Header -->
                         <button 
                             @click="toggle()"
-                            class="flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-800 {{ request()->routeIs('network.*') ? 'bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-white' : 'text-zinc-600 dark:text-zinc-400' }}"
+                            class="flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200 hover:bg-white hover:shadow-sm dark:hover:bg-zinc-800 {{ request()->routeIs('network.*') ? 'bg-white shadow-sm text-zinc-900 dark:bg-zinc-800 dark:text-white' : 'text-zinc-600 dark:text-zinc-400' }}"
                         >
                             <div class="flex items-center gap-3">
-                                <flux:icon.signal class="size-5" />
+                                <flux:icon.signal class="size-5 text-sky-600 dark:text-sky-400" />
                                 <span>{{ __('Network Connection') }}</span>
                             </div>
                             <flux:icon.chevron-down 
@@ -93,27 +93,27 @@
                             x-collapse
                             class="mt-1 space-y-1 pl-4"
                         >
-                            <flux:sidebar.item icon="server" :href="route('network.sign-on-vps')" :current="request()->routeIs('network.sign-on-vps')" class="text-sm">
+                            <flux:sidebar.item icon="server" :href="route('network.sign-on-vps')" :current="request()->routeIs('network.sign-on-vps')" class="text-sm [&_svg]:text-sky-500 dark:[&_svg]:text-sky-300">
                                 {{ __('Sign-On VPS') }}
                             </flux:sidebar.item>
 
-                            <flux:sidebar.item icon="play-circle" :href="route('network.start-tunnel')" :current="request()->routeIs('network.start-tunnel')" class="text-sm">
+                            <flux:sidebar.item icon="play-circle" :href="route('network.start-tunnel')" :current="request()->routeIs('network.start-tunnel')" class="text-sm [&_svg]:text-teal-500 dark:[&_svg]:text-teal-300">
                                 {{ __('Start Tunnel') }}
                             </flux:sidebar.item>
 
-                            <flux:sidebar.item icon="stop-circle" :href="route('network.stop-tunnel')" :current="request()->routeIs('network.stop-tunnel')" class="text-sm">
+                            <flux:sidebar.item icon="stop-circle" :href="route('network.stop-tunnel')" :current="request()->routeIs('network.stop-tunnel')" class="text-sm [&_svg]:text-red-500 dark:[&_svg]:text-red-300">
                                 {{ __('Stop Tunnel') }}
                             </flux:sidebar.item>
 
-                            <flux:sidebar.item icon="globe-alt" :href="route('network.check-ip')" :current="request()->routeIs('network.check-ip')" class="text-sm">
+                            <flux:sidebar.item icon="globe-alt" :href="route('network.check-ip')" :current="request()->routeIs('network.check-ip')" class="text-sm [&_svg]:text-blue-500 dark:[&_svg]:text-blue-300">
                                 {{ __('Check IP Address') }}
                             </flux:sidebar.item>
 
-                            <flux:sidebar.item icon="signal" :href="route('network.check-port')" :current="request()->routeIs('network.check-port')" class="text-sm">
+                            <flux:sidebar.item icon="signal" :href="route('network.check-port')" :current="request()->routeIs('network.check-port')" class="text-sm [&_svg]:text-violet-500 dark:[&_svg]:text-violet-300">
                                 {{ __('Check Port Status') }}
                             </flux:sidebar.item>
 
-                            <flux:sidebar.item icon="check-circle" :href="route('network.verify-environment')" :current="request()->routeIs('network.verify-environment')" class="text-sm">
+                            <flux:sidebar.item icon="check-circle" :href="route('network.verify-environment')" :current="request()->routeIs('network.verify-environment')" class="text-sm [&_svg]:text-green-500 dark:[&_svg]:text-green-300">
                                 {{ __('Verify Environment') }}
                             </flux:sidebar.item>
                         </div>
@@ -134,10 +134,10 @@
                         <!-- Dropdown Header -->
                         <button 
                             @click="toggle()"
-                            class="flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-800 {{ request()->routeIs('backup-database.*') ? 'bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-white' : 'text-zinc-600 dark:text-zinc-400' }}"
+                            class="flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200 hover:bg-white hover:shadow-sm dark:hover:bg-zinc-800 {{ request()->routeIs('backup-database.*') ? 'bg-white shadow-sm text-zinc-900 dark:bg-zinc-800 dark:text-white' : 'text-zinc-600 dark:text-zinc-400' }}"
                         >
                             <div class="flex items-center gap-3">
-                                <flux:icon.wrench-screwdriver class="size-5" />
+                                <flux:icon.wrench-screwdriver class="size-5 text-rose-600 dark:text-rose-400" />
                                 <span>{{ __('Tools') }}</span>
                             </div>
                             <flux:icon.chevron-down 
@@ -152,7 +152,7 @@
                             x-collapse
                             class="mt-1 space-y-1 pl-4"
                         >
-                            <flux:sidebar.item icon="circle-stack" :href="route('backup-database.index')" :current="request()->routeIs('backup-database.*')" class="text-sm">
+                            <flux:sidebar.item icon="circle-stack" :href="route('backup-database.index')" :current="request()->routeIs('backup-database.*')" class="text-sm [&_svg]:text-pink-500 dark:[&_svg]:text-pink-300">
                                 {{ __('Backup Database') }}
                             </flux:sidebar.item>
                         </div>
@@ -163,13 +163,7 @@
             <flux:spacer />
 
             <flux:sidebar.nav>
-                <flux:sidebar.item icon="folder-git-2" href="https://github.com/laravel/livewire-starter-kit" target="_blank">
-                    {{ __('Repository') }}
-                </flux:sidebar.item>
 
-                <flux:sidebar.item icon="book-open-text" href="https://laravel.com/docs/starter-kits#livewire" target="_blank">
-                    {{ __('Documentation') }}
-                </flux:sidebar.item>
 
                 <flux:sidebar.item as="button" icon="moon" x-on:click="toggle()" x-show="!darkMode" class="cursor-pointer">
                     {{ __('Dark Mode') }}

@@ -89,24 +89,24 @@
     @endif
 
     {{-- Table --}}
-    <div class="overflow-hidden rounded-lg border border-zinc-200 dark:border-zinc-700 shadow-sm">
+    <div class="overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-700 shadow-sm bg-white dark:bg-zinc-900">
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-zinc-200 dark:divide-zinc-700">
-                <thead class="bg-zinc-50 dark:bg-zinc-800">
+                <thead class="bg-zinc-900 text-white dark:bg-zinc-800 dark:text-zinc-400 border-b border-zinc-200 dark:border-zinc-700">
                     <tr>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider dark:text-zinc-400">
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                             {{ __('Nama') }}
                         </th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider dark:text-zinc-400">
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                             {{ __('Email') }}
                         </th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider dark:text-zinc-400">
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                             {{ __('No. HP') }}
                         </th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider dark:text-zinc-400">
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                             {{ __('Kota') }}
                         </th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider dark:text-zinc-400">
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                             {{ __('Status') }}
                         </th>
                         <th scope="col" class="relative px-6 py-3">
@@ -116,7 +116,7 @@
                 </thead>
                 <tbody class="bg-white divide-y divide-zinc-200 dark:bg-zinc-900 dark:divide-zinc-700">
                     @forelse ($pelanggans as $pelanggan)
-                        <tr wire:key="pelanggan-{{ $pelanggan->id }}" class="hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors">
+                        <tr wire:key="pelanggan-{{ $pelanggan->id }}" class="group hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-all duration-200">
                             <td class="px-6 py-4">
                                 <div class="text-sm font-medium text-zinc-900 dark:text-zinc-100">
                                     {{ $pelanggan->nama }}
@@ -139,11 +139,11 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 @if($pelanggan->aktif)
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-600/20 dark:bg-emerald-500/10 dark:text-emerald-400 dark:ring-emerald-500/20">
                                         {{ __('Aktif') }}
                                     </span>
                                 @else
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-rose-50 text-rose-700 ring-1 ring-inset ring-rose-600/20 dark:bg-rose-500/10 dark:text-rose-400 dark:ring-rose-500/20">
                                         {{ __('Nonaktif') }}
                                     </span>
                                 @endif
