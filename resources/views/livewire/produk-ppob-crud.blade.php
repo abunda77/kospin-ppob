@@ -12,8 +12,57 @@
                     placeholder="Cari produk..." 
                 />
             </div>
-            <flux:button wire:click="create" variant="primary" icon="plus">
-                {{ __('Tambah Produk') }}
+            
+            {{-- Export Buttons (Zinc Theme) --}}
+            <flux:dropdown>
+                <flux:button class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-800 shadow-sm transition-all duration-200 group">
+                    <flux:icon.arrow-down-tray class="w-4 h-4 text-zinc-500 dark:text-zinc-400 group-hover:text-zinc-700 dark:group-hover:text-zinc-200 mr-2 transition-colors" />
+                    <span class="text-zinc-700 dark:text-zinc-300 group-hover:text-zinc-900 dark:group-hover:text-zinc-100">{{ __('Export') }}</span>
+                </flux:button>
+                <flux:menu>
+                    <flux:menu.item wire:click="exportExcel" icon="document-text">
+                        {{ __('Export Excel') }}
+                    </flux:menu.item>
+                    <flux:menu.item wire:click="exportPdf" icon="document">
+                        {{ __('Export PDF') }}
+                    </flux:menu.item>
+                    <flux:menu.separator />
+                    <flux:menu.item wire:click="downloadTemplate" icon="arrow-down-circle">
+                        {{ __('Download Template') }}
+                    </flux:menu.item>
+                </flux:menu>
+            </flux:dropdown>
+
+            {{-- Import Button (Emerald Theme) --}}
+            <div x-data="{ uploading: false }" @upload-start.window="uploading = true" @upload-finish.window="uploading = false">
+                <div wire:loading.remove wire:target="importFile">
+                    <flux:button 
+                        @click="$refs.importFileInput.click()" 
+                        class="bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/50 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 shadow-sm transition-all duration-200 group"
+                    >
+                        <flux:icon.arrow-up-tray class="w-4 h-4 text-emerald-600 dark:text-emerald-400 group-hover:text-emerald-700 dark:group-hover:text-emerald-300 mr-2 transition-colors" />
+                        <span class="text-emerald-700 dark:text-emerald-400 group-hover:text-emerald-800 dark:group-hover:text-emerald-300">{{ __('Import') }}</span>
+                    </flux:button>
+                </div>
+                <div wire:loading wire:target="importFile">
+                    <flux:button disabled class="bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/50 opacity-75 cursor-not-allowed">
+                        <flux:icon.arrow-path class="animate-spin w-4 h-4 text-emerald-600 dark:text-emerald-400 mr-2" />
+                        <span class="text-emerald-700 dark:text-emerald-400">{{ __('Mengupload...') }}</span>
+                    </flux:button>
+                </div>
+                <input 
+                    type="file" 
+                    wire:model="importFile" 
+                    accept=".xlsx,.xls,.csv" 
+                    class="hidden"
+                    x-ref="importFileInput"
+                    id="import-file-input"
+                />
+            </div>
+
+            <flux:button wire:click="create" class="!bg-gradient-to-r !from-indigo-600 !to-violet-600 hover:!from-indigo-500 hover:!to-violet-500 !text-white !border-0 shadow-lg shadow-indigo-500/20 transition-all duration-200 hover:scale-[1.02] whitespace-nowrap">
+                <flux:icon.plus class="w-4 h-4 text-white mr-1" />
+                <span>{{ __('Tambah Produk') }}</span>
             </flux:button>
         </div>
     </div>
@@ -225,6 +274,104 @@
             <div class="flex justify-end gap-2">
                 <flux:button wire:click="$set('showDeleteModal', false)" variant="ghost">{{ __('Batal') }}</flux:button>
                 <flux:button wire:click="delete" variant="filled" class="bg-red-600 hover:bg-red-700 text-white border-transparent">{{ __('Hapus') }}</flux:button>
+            </div>
+        </div>
+    </flux:modal>
+    {{-- Import Confirmation Modal --}}
+    <flux:modal wire:model="showImportModal" class="md:min-w-[32rem]">
+        <div class="mb-4">
+            <h3 class="text-lg font-medium leading-6 text-zinc-900 dark:text-zinc-100">
+                {{ __('Konfirmasi Import Data') }}
+            </h3>
+            <p class="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+                {{ __('Pilih mode import data produk.') }}
+            </p>
+        </div>
+
+        <div class="space-y-4">
+            <div class="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-md p-4">
+                <div class="flex">
+                    <flux:icon.exclamation-triangle class="h-5 w-5 text-amber-400" />
+                    <div class="ml-3">
+                        <h3 class="text-sm font-medium text-amber-800 dark:text-amber-300">
+                            {{ __('Perhatian') }}
+                        </h3>
+                        <div class="mt-2 text-sm text-amber-700 dark:text-amber-400">
+                            <p>{{ __('Silakan pilih mode import yang sesuai:') }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-y-4">
+                {{-- Append Mode --}}
+                <label class="flex items-start gap-3 cursor-pointer p-3 rounded-lg border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors" :class="$wire.importMode === 'append' ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-500' : ''">
+                    <input 
+                        type="radio" 
+                        wire:model.live="importMode" 
+                        name="importMode" 
+                        value="append" 
+                        class="mt-0.5 h-4 w-4 text-blue-600 border-zinc-300 focus:ring-blue-500"
+                    />
+                    <div class="flex-1">
+                        <div class="font-medium text-zinc-900 dark:text-zinc-100">
+                            {{ __('Tambah Data (Append)') }}
+                        </div>
+                        <p class="text-sm text-zinc-500 dark:text-zinc-400 mt-1">
+                            {{ __('Data dari file akan ditambahkan ke data yang sudah ada. Data lama tetap dipertahankan.') }}
+                        </p>
+                    </div>
+                </label>
+
+                {{-- Replace Mode --}}
+                <label class="flex items-start gap-3 cursor-pointer p-3 rounded-lg border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors" :class="$wire.importMode === 'replace' ? 'bg-red-50 dark:bg-red-900/20 border-red-500' : ''">
+                    <input 
+                        type="radio" 
+                        wire:model.live="importMode" 
+                        name="importMode" 
+                        value="replace" 
+                        class="mt-0.5 h-4 w-4 text-red-600 border-zinc-300 focus:ring-red-500"
+                    />
+                    <div class="flex-1">
+                        <div class="font-medium text-zinc-900 dark:text-zinc-100">
+                            {{ __('Timpa Data (Replace)') }}
+                        </div>
+                        <p class="text-sm text-zinc-500 dark:text-zinc-400 mt-1">
+                            {{ __('Data lama akan dihapus semua dan diganti dengan data dari file.') }}
+                        </p>
+                    </div>
+                </label>
+            </div>
+
+            @if($importFile)
+                <div class="bg-zinc-50 dark:bg-zinc-800 rounded-md p-3">
+                    <p class="text-sm text-zinc-700 dark:text-zinc-300">
+                        <span class="font-medium">{{ __('File:') }}</span> {{ $importFile->getClientOriginalName() }}
+                    </p>
+                </div>
+            @endif
+        </div>
+
+
+        <div class="flex justify-end gap-2 mt-6">
+            <flux:button wire:click="cancelImport" variant="ghost" wire:loading.attr="disabled">
+                {{ __('Batal') }}
+            </flux:button>
+            
+            <div wire:loading.remove wire:target="executeImport">
+                <flux:button wire:click="executeImport" variant="primary">
+                    {{ __('Import Sekarang') }}
+                </flux:button>
+            </div>
+            
+            <div wire:loading wire:target="executeImport">
+                <flux:button variant="primary" disabled>
+                    <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    {{ __('Mengimport...') }}
+                </flux:button>
             </div>
         </div>
     </flux:modal>

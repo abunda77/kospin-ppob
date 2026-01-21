@@ -6,6 +6,7 @@ use App\Http\Controllers\NetworkConnectionController;
 use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\PelangganExportController;
 use App\Http\Controllers\ProdukPpobController;
+use App\Http\Controllers\ProdukPpobExportController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\SubKategoriController;
 use App\Http\Controllers\UsersController;
@@ -33,6 +34,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/sub-kategori', [SubKategoriController::class, 'index'])->name('sub-kategori.index');
     Route::get('/produk-ppob', [ProdukPpobController::class, 'index'])->name('produk-ppob.index');
     Route::get('/pelanggan', [PelangganController::class, 'index'])->name('pelanggan.index');
+
+    // Produk PPOB Export Routes
+    Route::get('/produk-ppob/export/excel', [ProdukPpobExportController::class, 'exportExcel'])->name('produk-ppob.export.excel');
+    Route::get('/produk-ppob/export/pdf', [ProdukPpobExportController::class, 'exportPdf'])->name('produk-ppob.export.pdf');
+    Route::get('/produk-ppob/export/template', [ProdukPpobExportController::class, 'downloadTemplate'])->name('produk-ppob.export.template');
 
     // Pelanggan Export Routes
     Route::get('/pelanggan/export/excel', [PelangganExportController::class, 'exportExcel'])->name('pelanggan.export.excel');
