@@ -119,6 +119,45 @@
                         </div>
                     </div>
                 @endcan
+
+                @can('backup.view')
+                    <div 
+                        x-data="{ 
+                            expanded: localStorage.getItem('tools_menu_expanded') === 'true' || {{ request()->routeIs('backup-database.*') ? 'true' : 'false' }},
+                            toggle() {
+                                this.expanded = !this.expanded;
+                                localStorage.setItem('tools_menu_expanded', this.expanded);
+                            }
+                        }" 
+                        class="px-4 py-2"
+                    >
+                        <!-- Dropdown Header -->
+                        <button 
+                            @click="toggle()"
+                            class="flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-800 {{ request()->routeIs('backup-database.*') ? 'bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-white' : 'text-zinc-600 dark:text-zinc-400' }}"
+                        >
+                            <div class="flex items-center gap-3">
+                                <flux:icon.wrench-screwdriver class="size-5" />
+                                <span>{{ __('Tools') }}</span>
+                            </div>
+                            <flux:icon.chevron-down 
+                                class="size-4 transition-transform duration-200" 
+                                ::class="{ 'rotate-180': expanded }"
+                            />
+                        </button>
+
+                        <!-- Dropdown Items -->
+                        <div 
+                            x-show="expanded" 
+                            x-collapse
+                            class="mt-1 space-y-1 pl-4"
+                        >
+                            <flux:sidebar.item icon="circle-stack" :href="route('backup-database.index')" :current="request()->routeIs('backup-database.*')" class="text-sm">
+                                {{ __('Backup Database') }}
+                            </flux:sidebar.item>
+                        </div>
+                    </div>
+                @endcan
             </flux:sidebar.nav>
 
             <flux:spacer />

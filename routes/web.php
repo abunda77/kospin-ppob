@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BackupDatabaseController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\NetworkConnectionController;
 use App\Http\Controllers\PelangganController;
@@ -47,6 +48,12 @@ Route::middleware(['auth', 'verified', 'can:network.view'])->group(function () {
     Route::get('/network/check-ip', [NetworkConnectionController::class, 'checkIp'])->name('network.check-ip');
     Route::get('/network/check-port', [NetworkConnectionController::class, 'checkPort'])->name('network.check-port');
     Route::get('/network/verify-environment', [NetworkConnectionController::class, 'verifyEnvironment'])->name('network.verify-environment');
+});
+
+// Tools routes
+Route::middleware(['auth', 'verified', 'can:backup.view'])->group(function () {
+    Route::get('/backup-database', [BackupDatabaseController::class, 'index'])->name('backup-database.index');
+    Route::get('/backup-database/download/{id}', [BackupDatabaseController::class, 'download'])->name('backup-database.download');
 });
 
 require __DIR__.'/settings.php';
