@@ -163,4 +163,20 @@ return [
     'vps_ip' => env('VPS_IP'),
     'vps_user' => env('VPS_USER'),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Export Limits
+    |--------------------------------------------------------------------------
+    |
+    | These values determine the maximum number of records that can be
+    | exported for different formats. This helps prevent memory issues
+    | and timeout errors when dealing with large datasets.
+    |
+    */
+
+    'export_limits' => [
+        'pdf_max_records' => env('EXPORT_PDF_MAX_RECORDS', 1000),
+        'excel_chunk_size' => env('EXPORT_EXCEL_CHUNK_SIZE', 1000),
+    ],
+
 ];

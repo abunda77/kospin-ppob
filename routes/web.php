@@ -3,6 +3,7 @@
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\NetworkConnectionController;
 use App\Http\Controllers\PelangganController;
+use App\Http\Controllers\PelangganExportController;
 use App\Http\Controllers\ProdukPpobController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\SubKategoriController;
@@ -31,6 +32,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/sub-kategori', [SubKategoriController::class, 'index'])->name('sub-kategori.index');
     Route::get('/produk-ppob', [ProdukPpobController::class, 'index'])->name('produk-ppob.index');
     Route::get('/pelanggan', [PelangganController::class, 'index'])->name('pelanggan.index');
+
+    // Pelanggan Export Routes
+    Route::get('/pelanggan/export/excel', [PelangganExportController::class, 'exportExcel'])->name('pelanggan.export.excel');
+    Route::get('/pelanggan/export/pdf', [PelangganExportController::class, 'exportPdf'])->name('pelanggan.export.pdf');
+    Route::get('/pelanggan/export/template', [PelangganExportController::class, 'downloadTemplate'])->name('pelanggan.export.template');
 });
 
 // Network Connection routes

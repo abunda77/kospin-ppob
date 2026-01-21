@@ -2,12 +2,17 @@
 
 namespace App\Livewire;
 
+use App\Imports\PelangganImport;
 use App\Models\Pelanggan;
 use Livewire\Component;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use Livewire\WithFileUploads;
 use Livewire\WithPagination;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PelangganCrud extends Component
 {
+    use WithFileUploads;
     use WithPagination;
 
     // Filters
@@ -42,6 +47,13 @@ class PelangganCrud extends Component
     public bool $showModal = false;
 
     public bool $showDeleteModal = false;
+
+    // Import Properties
+    public ?TemporaryUploadedFile $importFile = null;
+
+    public string $importMode = 'append';
+
+    public bool $showImportModal = false;
 
     protected $listeners = [
         'refreshPelanggan' => '$refresh',
@@ -202,6 +214,141 @@ class PelangganCrud extends Component
     {
         $this->showModal = false;
         $this->resetForm();
+    }
+
+    // Export Methods
+    public function exportExcel()
+    {
+        return redirect()->route('pelanggan.export.excel');
+    }
+
+    public function exportPdf()
+    {
+        return redirect()->route('pelanggan.export.pdf');
+    }
+
+    public function downloadTemplate()
+    {
+        return redirect()->route('pelanggan.export.template');
+    }
+
+    // Import Methods
+    public function updatedImportFile()
+    {
+        // Reset validation before showing modal
+        $this->resetValidation('importFile');
+
+        // Validate file
+        try {
+            $this->validate([
+                'importFile' => 'required|file|mimes:xlsx,csv,xls|max:2048',
+            ], [
+                'importFile.required' => 'File harus dipilih.',
+                'importFile.mimes' => 'File harus berformat XLSX, XLS, atau CSV.',
+                'importFile.max' => 'Ukuran file maksimal 2MB.',
+            ]);
+
+            // If validation passes, show the modal
+            $this->showImportModal = true;
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // If validation fails, show error message
+            session()->flash('error', $e->validator->errors()->first('importFile'));
+            $this->importFile = null;
+        }
+    }
+
+    public function showImportConfirmation(): void
+    {
+        $this->validate([
+            'importFile' => 'required|file|mimes:xlsx,csv,xls|max:2048',
+        ], [
+            'importFile.required' => 'File harus dipilih.',
+            'importFile.mimes' => 'File harus berformat XLSX, XLS, atau CSV.',
+            'importFile.max' => 'Ukuran file maksimal 2MB.',
+        ]);
+
+        $this->showImportModal = true;
+    }
+
+    public function executeImport(): void
+    {
+        // Log untuk debugging
+        \Log::info('executeImport called', [
+            'importFile' => $this->importFile ? $this->importFile->getClientOriginalName() : 'null',
+            'importMode' => $this->importMode,
+        ]);
+
+        // Validate import file exists
+        if (! $this->importFile) {
+            \Log::error('Import failed: File not found');
+            session()->flash('error', 'File tidak ditemukan. Silakan upload ulang file.');
+            $this->showImportModal = false;
+
+            return;
+        }
+
+        // Validate import mode is selected
+        if (! in_array($this->importMode, ['append', 'replace'])) {
+            \Log::error('Import failed: Invalid mode', ['mode' => $this->importMode]);
+            session()->flash('error', 'Silakan pilih mode import.');
+
+            return;
+        }
+
+        try {
+            $replaceMode = $this->importMode === 'replace';
+
+            \Log::info('Starting import', [
+                'mode' => $replaceMode ? 'replace' : 'append',
+                'file' => $this->importFile->getClientOriginalName(),
+            ]);
+
+            // Execute import
+            Excel::import(
+                new PelangganImport($replaceMode),
+                $this->importFile->getRealPath()
+            );
+
+            $message = $replaceMode
+                ? 'Data pelanggan berhasil diimport dan data lama telah ditimpa.'
+                : 'Data pelanggan berhasil diimport.';
+
+            session()->flash('message', $message);
+            \Log::info('Import success', ['mode' => $replaceMode ? 'replace' : 'append']);
+
+            // Close modal and reset
+            $this->showImportModal = false;
+            $this->importFile = null;
+            $this->importMode = 'append';
+
+            // Refresh data
+            $this->dispatch('refreshPelanggan');
+        } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+            $failures = $e->failures();
+            $errorMessages = [];
+
+            foreach ($failures as $failure) {
+                $errorMessages[] = "Baris {$failure->row()}: ".implode(', ', $failure->errors());
+            }
+
+            \Log::error('Import validation failed', ['errors' => $errorMessages]);
+            session()->flash('error', 'Validasi gagal: '.implode(' | ', $errorMessages));
+            $this->showImportModal = false;
+        } catch (\Exception $e) {
+            \Log::error('Import exception', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+            session()->flash('error', 'Terjadi kesalahan saat import: '.$e->getMessage());
+            $this->showImportModal = false;
+        }
+    }
+
+    public function cancelImport(): void
+    {
+        $this->showImportModal = false;
+        $this->importFile = null;
+        $this->importMode = 'append';
     }
 
     public function render()
