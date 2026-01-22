@@ -26,11 +26,13 @@
                     </flux:sidebar.item>
                 </flux:sidebar.group>
 
-                @can('users.view')
+                @if(auth()->user()->can('users.view') || auth()->user()->can('roles.view'))
                     <flux:sidebar.group :heading="__('Administration')" class="grid gap-2">
-                        <flux:sidebar.item icon="users" :href="route('users.index')" :current="request()->routeIs('users.*')" class="[&_svg]:text-indigo-600 dark:[&_svg]:text-indigo-400 hover:bg-white dark:hover:bg-white/10 hover:shadow-sm transition-all duration-200">
-                            {{ __('Users') }}
-                        </flux:sidebar.item>
+                        @can('users.view')
+                            <flux:sidebar.item icon="users" :href="route('users.index')" :current="request()->routeIs('users.*')" class="[&_svg]:text-indigo-600 dark:[&_svg]:text-indigo-400 hover:bg-white dark:hover:bg-white/10 hover:shadow-sm transition-all duration-200">
+                                {{ __('Users') }}
+                            </flux:sidebar.item>
+                        @endcan
 
                         @can('roles.view')
                             <flux:sidebar.item icon="shield-check" :href="route('roles.index')" :current="request()->routeIs('roles.*')" class="[&_svg]:text-purple-600 dark:[&_svg]:text-purple-400 hover:bg-white dark:hover:bg-white/10 hover:shadow-sm transition-all duration-200">
@@ -38,19 +40,27 @@
                             </flux:sidebar.item>
                         @endcan
                     </flux:sidebar.group>
+                @endif
 
+                @if(auth()->user()->can('kategori.view') || auth()->user()->can('sub_kategori.view') || auth()->user()->can('produk_ppob.view') || auth()->user()->can('pelanggan.view'))
                     <flux:sidebar.group :heading="__('Master Data')" class="grid gap-2">
-                        <flux:sidebar.item icon="rectangle-stack" :href="route('kategori.index')" :current="request()->routeIs('kategori.*')" class="[&_svg]:text-orange-600 dark:[&_svg]:text-orange-400 hover:bg-white dark:hover:bg-white/10 hover:shadow-sm transition-all duration-200">
-                            {{ __('Kategori') }}
-                        </flux:sidebar.item>
+                        @can('kategori.view')
+                            <flux:sidebar.item icon="rectangle-stack" :href="route('kategori.index')" :current="request()->routeIs('kategori.*')" class="[&_svg]:text-orange-600 dark:[&_svg]:text-orange-400 hover:bg-white dark:hover:bg-white/10 hover:shadow-sm transition-all duration-200">
+                                {{ __('Kategori') }}
+                            </flux:sidebar.item>
+                        @endcan
 
-                        <flux:sidebar.item icon="squares-2x2" :href="route('sub-kategori.index')" :current="request()->routeIs('sub-kategori.*')" class="[&_svg]:text-amber-600 dark:[&_svg]:text-amber-400 hover:bg-white dark:hover:bg-white/10 hover:shadow-sm transition-all duration-200">
-                            {{ __('Sub Kategori') }}
-                        </flux:sidebar.item>
+                        @can('sub_kategori.view')
+                            <flux:sidebar.item icon="squares-2x2" :href="route('sub-kategori.index')" :current="request()->routeIs('sub-kategori.*')" class="[&_svg]:text-amber-600 dark:[&_svg]:text-amber-400 hover:bg-white dark:hover:bg-white/10 hover:shadow-sm transition-all duration-200">
+                                {{ __('Sub Kategori') }}
+                            </flux:sidebar.item>
+                        @endcan
 
-                        <flux:sidebar.item icon="cube" :href="route('produk-ppob.index')" :current="request()->routeIs('produk-ppob.*')" class="[&_svg]:text-emerald-600 dark:[&_svg]:text-emerald-400 hover:bg-white dark:hover:bg-white/10 hover:shadow-sm transition-all duration-200">
-                            {{ __('Produk PPOB') }}
-                        </flux:sidebar.item>
+                        @can('produk_ppob.view')
+                            <flux:sidebar.item icon="cube" :href="route('produk-ppob.index')" :current="request()->routeIs('produk-ppob.*')" class="[&_svg]:text-emerald-600 dark:[&_svg]:text-emerald-400 hover:bg-white dark:hover:bg-white/10 hover:shadow-sm transition-all duration-200">
+                                {{ __('Produk PPOB') }}
+                            </flux:sidebar.item>
+                        @endcan
 
                         @can('pelanggan.view')
                             <flux:sidebar.item icon="users" :href="route('pelanggan.index')" :current="request()->routeIs('pelanggan.*')" class="[&_svg]:text-cyan-600 dark:[&_svg]:text-cyan-400 hover:bg-white dark:hover:bg-white/10 hover:shadow-sm transition-all duration-200">
@@ -58,8 +68,7 @@
                             </flux:sidebar.item>
                         @endcan
                     </flux:sidebar.group>
-
-                @endcan
+                @endif
 
                 @can('network.view')
                     <div 

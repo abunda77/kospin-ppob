@@ -168,6 +168,9 @@
                 <p class="text-sm text-zinc-500 dark:text-zinc-400 mt-2">
                     {{ __('Are you sure you want to delete this user? This action cannot be undone.') }}
                 </p>
+                <div class="mt-4">
+                     <flux:checkbox wire:model="forceDelete" label="{{ __('Delete Permanently') }}" />
+                </div>
             </div>
             
             <div class="flex justify-end gap-2">

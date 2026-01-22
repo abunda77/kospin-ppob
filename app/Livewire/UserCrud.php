@@ -35,6 +35,8 @@ class UserCrud extends Component
 
     public $showDeleteModal = false;
 
+    public $forceDelete = false; // Add this property
+
     // Listeners are implicit in Livewire 3/4 usually, or wire:click is used directly.
     // Keeping listeners for external events if any.
     protected $listeners = [
@@ -153,6 +155,7 @@ class UserCrud extends Component
         }
 
         $this->userId = $userId;
+        $this->forceDelete = false; // Reset force delete option
         $this->showDeleteModal = true;
     }
 
@@ -168,11 +171,16 @@ class UserCrud extends Component
             return;
         }
 
-        $user->delete();
+        if ($this->forceDelete) {
+            $user->forceDelete();
+        } else {
+            $user->delete();
+        }
 
         session()->flash('message', 'User deleted successfully.');
         $this->showDeleteModal = false;
         $this->userId = null;
+        $this->forceDelete = false;
     }
 
     public function resetForm(): void
