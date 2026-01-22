@@ -206,7 +206,7 @@
             </div>
             
             <div>
-                <flux:switch wire:model="aktif" label="{{ __('Status Aktif') }}" />
+                <flux:switch wire:model="aktif" label="{{ __('Status Aktif') }}" class="data-checked:!bg-gradient-to-r data-checked:!from-emerald-500 data-checked:!to-teal-400 data-checked:!border-0" />
             </div>
             
             <flux:textarea wire:model="catatan" label="{{ __('Catatan') }}" placeholder="Catatan tambahan" rows="2" />

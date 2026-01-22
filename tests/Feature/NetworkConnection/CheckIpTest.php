@@ -67,9 +67,9 @@ it('detects ip match when current ip matches registered ip via livewire', functi
     */
     // However, user setup might rely on real behavior. Current tests were doing real calls.
     // Let's stick to what we have but updated for Livewire.
-    
+
     // We will do a generic test that it populates data.
-    
+
     Livewire::actingAs($this->user)
         ->test(CheckIp::class)
         ->call('runCheck')

@@ -2,19 +2,19 @@
 
 namespace App\Livewire;
 
+use App\Imports\ProdukPpobImport;
 use App\Models\ProdukPpob;
 use App\Models\SubKategori;
 use Livewire\Component;
-use Livewire\WithPagination;
-use App\Imports\ProdukPpobImport;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Livewire\WithFileUploads;
+use Livewire\WithPagination;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ProdukPpobCrud extends Component
 {
-    use WithPagination;
     use WithFileUploads;
+    use WithPagination;
 
     // Filters
     public string $search = '';
@@ -278,14 +278,14 @@ class ProdukPpobCrud extends Component
     public function exportExcel()
     {
         return redirect()->route('produk-ppob.export.excel', [
-            'sub_kategori_id' => $this->filterSubKategoriId
+            'sub_kategori_id' => $this->filterSubKategoriId,
         ]);
     }
 
     public function exportPdf()
     {
         return redirect()->route('produk-ppob.export.pdf', [
-            'sub_kategori_id' => $this->filterSubKategoriId
+            'sub_kategori_id' => $this->filterSubKategoriId,
         ]);
     }
 
@@ -367,7 +367,7 @@ class ProdukPpobCrud extends Component
 
             // If replace mode, truncate table first
             if ($replaceMode) {
-                // Warning: This deletes ALL data. 
+                // Warning: This deletes ALL data.
                 // Consider adding a "soft delete" or backup step if safety is critical.
                 // For now, adhering to the "Replace" contract.
                 ProdukPpob::truncate();
@@ -376,7 +376,7 @@ class ProdukPpobCrud extends Component
             // Execute import
             // Note: replaceMode argument is removed from Import class as we handle truncation here
             Excel::import(
-                new ProdukPpobImport(),
+                new ProdukPpobImport,
                 $this->importFile->getRealPath()
             );
 

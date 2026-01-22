@@ -57,9 +57,13 @@ Route::middleware(['auth', 'verified', 'can:network.view'])->group(function () {
 });
 
 // Tools routes
-Route::middleware(['auth', 'verified', 'can:backup.view'])->group(function () {
-    Route::get('/backup-database', [BackupDatabaseController::class, 'index'])->name('backup-database.index');
-    Route::get('/backup-database/download/{id}', [BackupDatabaseController::class, 'download'])->name('backup-database.download');
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::middleware('can:backup.view')->group(function () {
+        Route::get('/backup-database', [BackupDatabaseController::class, 'index'])->name('backup-database.index');
+        Route::get('/backup-database/download/{id}', [BackupDatabaseController::class, 'download'])->name('backup-database.download');
+    });
+
+    Route::middleware('can:activity_log.view')->get('/activity-log', [App\Http\Controllers\ActivityLogController::class, 'index'])->name('activity-log.index');
 });
 
 require __DIR__.'/settings.php';

@@ -120,10 +120,10 @@
                     </div>
                 @endcan
 
-                @can('backup.view')
+                @if(auth()->user()->can('backup.view') || auth()->user()->can('activity_log.view'))
                     <div 
                         x-data="{ 
-                            expanded: localStorage.getItem('tools_menu_expanded') === 'true' || {{ request()->routeIs('backup-database.*') ? 'true' : 'false' }},
+                            expanded: localStorage.getItem('tools_menu_expanded') === 'true' || {{ request()->routeIs('backup-database.*') || request()->routeIs('activity-log.*') ? 'true' : 'false' }},
                             toggle() {
                                 this.expanded = !this.expanded;
                                 localStorage.setItem('tools_menu_expanded', this.expanded);
@@ -134,7 +134,7 @@
                         <!-- Dropdown Header -->
                         <button 
                             @click="toggle()"
-                            class="flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200 hover:bg-white hover:shadow-sm dark:hover:bg-zinc-800 {{ request()->routeIs('backup-database.*') ? 'bg-white shadow-sm text-zinc-900 dark:bg-zinc-800 dark:text-white' : 'text-zinc-600 dark:text-zinc-400' }}"
+                            class="flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200 hover:bg-white hover:shadow-sm dark:hover:bg-zinc-800 {{ request()->routeIs('backup-database.*') || request()->routeIs('activity-log.*') ? 'bg-white shadow-sm text-zinc-900 dark:bg-zinc-800 dark:text-white' : 'text-zinc-600 dark:text-zinc-400' }}"
                         >
                             <div class="flex items-center gap-3">
                                 <flux:icon.wrench-screwdriver class="size-5 text-rose-600 dark:text-rose-400" />
@@ -152,12 +152,20 @@
                             x-collapse
                             class="mt-1 space-y-1 pl-4"
                         >
-                            <flux:sidebar.item icon="circle-stack" :href="route('backup-database.index')" :current="request()->routeIs('backup-database.*')" class="text-sm [&_svg]:text-pink-500 dark:[&_svg]:text-pink-300">
-                                {{ __('Backup Database') }}
-                            </flux:sidebar.item>
+                            @can('backup.view')
+                                <flux:sidebar.item icon="circle-stack" :href="route('backup-database.index')" :current="request()->routeIs('backup-database.*')" class="text-sm [&_svg]:text-pink-500 dark:[&_svg]:text-pink-300">
+                                    {{ __('Backup Database') }}
+                                </flux:sidebar.item>
+                            @endcan
+
+                            @can('activity_log.view')
+                                <flux:sidebar.item icon="clipboard-document-list" :href="route('activity-log.index')" :current="request()->routeIs('activity-log.*')" class="text-sm [&_svg]:text-yellow-500 dark:[&_svg]:text-yellow-300">
+                                    {{ __('Activity Log') }}
+                                </flux:sidebar.item>
+                            @endcan
                         </div>
                     </div>
-                @endcan
+                @endif
             </flux:sidebar.nav>
 
             <flux:spacer />

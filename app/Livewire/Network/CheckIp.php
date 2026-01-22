@@ -8,6 +8,7 @@ use Livewire\Component;
 class CheckIp extends Component
 {
     public $results = null;
+
     public $isRunning = false;
 
     public function runCheck()

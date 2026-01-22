@@ -7,6 +7,7 @@ use Livewire\Component;
 class CheckPort extends Component
 {
     public $results = null;
+
     public $isRunning = false;
 
     public function runCheck()

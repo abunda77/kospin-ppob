@@ -70,6 +70,9 @@ class RolePermissionSeeder extends Seeder
             'backup.view',
             'backup.create',
             'backup.delete',
+
+            // Activity Log Management
+            'activity_log.view',
         ];
 
         foreach ($permissions as $permission) {

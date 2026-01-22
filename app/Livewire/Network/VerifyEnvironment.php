@@ -53,6 +53,7 @@ class VerifyEnvironment extends Component
     public array $gitignoreEntries = ['.env', 'session_id.txt', 'session_history.txt'];
 
     public $hasRun = false;
+
     public $isRunning = false;
 
     public function mount(): void
@@ -63,10 +64,10 @@ class VerifyEnvironment extends Component
     public function runCheck(): void
     {
         $this->isRunning = true;
-        
+
         // Simulate a small delay for better UX
         sleep(1);
-        
+
         $this->verifyEnvironment();
         $this->hasRun = true;
         $this->isRunning = false;
@@ -210,6 +211,4 @@ class VerifyEnvironment extends Component
 
         $this->allChecksPassed = $this->envFileExists && $requiredOk && $noPlaceholders && $gitignoreOk;
     }
-
-
 }

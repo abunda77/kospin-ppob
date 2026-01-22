@@ -40,7 +40,7 @@ it('can run verification via livewire', function () {
     $component->assertSet('hasRun', true)
         ->assertSet('isRunning', false)
         ->assertSet('envFileExists', true); // Assuming .env exists in test env
-        
+
     // Check if variables are populated
     $requiredVars = $component->get('requiredVars');
     expect($requiredVars)->toBeArray();

@@ -45,16 +45,16 @@ it('requires network.view permission', function () {
 it('can run port check via livewire', function () {
     $component = Livewire::actingAs($this->admin)
         ->test(CheckPort::class);
-        
+
     $component->assertSet('results', null)
         ->assertSet('isRunning', false)
         ->call('runCheck');
-        
+
     $component->assertSet('isRunning', false)
         ->assertNotSet('results', null);
-        
+
     $results = $component->get('results');
-    
+
     expect($results)->toHaveKeys([
         'system_info',
         'proxy_port',

@@ -123,7 +123,7 @@ it('calculates price fields correctly', function () {
         ->assertSet('harga_beli', 10000)
         ->assertSet('harga_jual', 10000)
         ->assertSet('profit', 0)
-        
+
         ->set('biaya_admin', 2000)
         ->assertSet('harga_beli', 12000)
         ->assertSet('harga_jual', 12000)

@@ -29,16 +29,16 @@ class ProdukPpobExportController extends Controller
     {
         $subKategoriId = $request->input('sub_kategori_id');
         $maxRecords = config('app.export_limits.pdf_max_records', 1000);
-        
+
         $query = ProdukPpob::query();
         $subKategoriName = '';
-        
+
         if ($subKategoriId) {
             $query->where('sub_kategori_id', $subKategoriId);
             $subKategori = \App\Models\SubKategori::find($subKategoriId);
             $subKategoriName = $subKategori ? \Illuminate\Support\Str::slug($subKategori->nama).'-' : 'filtered-';
         }
-        
+
         $totalRecords = $query->count();
 
         // Check if total records exceeds limit
